@@ -13,16 +13,21 @@
 
 %%% template leaflet-tiles-mapbox %%%
 
+	L.Icon.Default.imagePath = '%%% setting layout_path %%%/carabidae/symbols/';
 	var map = L.map('map').addLayer(tiles);
 	var geoJsonLayer = L.geoJson(locations, {
         pointToLayer: function(feature, latlng) {
 			if (feature.properties.style === 'default' | !feature.properties.style) {
-				var myIcon = new L.Icon.Default({ iconUrl: '/_layout/carabidae/symbols/marker-icon.png'
-					, iconSize: [18, 27], iconAnchor: [9, 27]
+				var myIcon = new L.Icon.Default({
+					iconUrl: 'marker-icon.png',
+					iconRetinaUrl: 'marker-icon.png',
+					iconSize: [18, 27], iconAnchor: [9, 27]
 				});
 			} else {
-				var myIcon = new L.Icon.Default({ iconUrl: '/_layout/carabidae/symbols/' + feature.properties.style + '.png'
-					, iconSize: [32, 32], iconAnchor: [16, 16]
+				var myIcon = new L.Icon.Default({
+					iconUrl: feature.properties.style + '.png',
+					iconRetinaUrl: feature.properties.style + '.png',
+					iconSize: [32, 32], iconAnchor: [16, 16]
 				});
 			}
 	        myIcon.options.shadowSize = [0,0];
