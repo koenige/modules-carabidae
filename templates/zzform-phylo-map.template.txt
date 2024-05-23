@@ -1,0 +1,54 @@
+# Zugzwang Project
+# Copyright (c) 2019 Gustaf Mossakowski <gustaf@koenige.org> 
+# Map for zzform + GeoJSON + Leaflet
+#
+# List of fields:
+# geojson
+#
+<div id="map" class="smallmap" style="height: 580px;"> </div>
+
+<script src="/_behaviour/leaflet/leaflet.js"></script>
+<script src="%%% item geojson %%%"></script>
+<script type="text/javascript">
+
+	var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/%%% setting mapbox_user %%%/%%% setting mapbox_style %%%/tiles/512/{z}/{x}/{y}?access_token=%%% setting mapbox_access_token %%%', {
+		maxZoom: 18, tileSize: 512,  zoomOffset: -1,
+		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	});
+
+	var map = L.map('map').addLayer(tiles);
+	var geoJsonLayer = L.geoJson(locations, {
+        pointToLayer: function(feature, latlng) {
+			if (feature.properties.style === 'default' | !feature.properties.style) {
+				var myIcon = new L.Icon.Default({ iconUrl: '/_layout/carabidae/symbols/marker-icon.png'
+					, iconSize: [18, 27], iconAnchor: [9, 27]
+				});
+			} else {
+				var myIcon = new L.Icon.Default({ iconUrl: '/_layout/carabidae/symbols/' + feature.properties.style + '.png'
+					, iconSize: [32, 32], iconAnchor: [16, 16]
+				});
+			}
+	        myIcon.options.shadowSize = [0,0];
+            return L.marker(latlng, {
+                icon: myIcon, title: feature.properties.title,
+                link: feature.id
+            });
+        },
+		onEachFeature: function (feature, layer) {
+			var popupText = '<p class="place"><strong>' + feature.properties.title + '</strong>';
+			popupText += "<br>Datasource: " + feature.properties.Datasource;
+			popupText += "<br>Index no: " + feature.properties.IndexNo;
+			popupText += "<br>Country: " + feature.properties.Country;
+			popupText += "<br>Region: " + feature.properties.Region;
+			popupText += "<br>Locality: " + feature.properties.Locality;
+			popupText += "<br>Sets: " + feature.properties.Sets;
+			popupText += "<br><a href='?edit=" + feature.id + "'>Edit this record</a>";
+			popupText += '</p>';
+
+			layer.bindPopup(popupText);
+		}
+	});
+	map.addLayer(geoJsonLayer);
+	map.fitBounds(geoJsonLayer.getBounds(), {maxZoom: 5, padding: [10, 10]});
+
+</script>
