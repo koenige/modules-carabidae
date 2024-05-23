@@ -1,5 +1,5 @@
 # Zugzwang Project
-# Copyright (c) 2019 Gustaf Mossakowski <gustaf@koenige.org> 
+# Copyright (c) 2019, 2024 Gustaf Mossakowski <gustaf@koenige.org> 
 # Map for zzform + GeoJSON + Leaflet
 #
 # List of fields:
@@ -7,14 +7,11 @@
 #
 <div id="map" class="smallmap" style="height: 580px;"> </div>
 
-<script src="/_behaviour/leaflet/leaflet.js"></script>
+<script src="%%% setting behaviour_path %%%/leaflet/leaflet.js"></script>
 <script src="%%% item geojson %%%"></script>
-<script type="text/javascript">
+<script>
 
-	var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/%%% setting mapbox_user %%%/%%% setting mapbox_style %%%/tiles/512/{z}/{x}/{y}?access_token=%%% setting mapbox_access_token %%%', {
-		maxZoom: 18, tileSize: 512,  zoomOffset: -1,
-		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-	});
+%%% template leaflet-tiles-mapbox %%%
 
 	var map = L.map('map').addLayer(tiles);
 	var geoJsonLayer = L.geoJson(locations, {
